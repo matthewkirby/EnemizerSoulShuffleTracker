@@ -1,6 +1,6 @@
 import { Button, Container, Flex, Popover, Text } from "@mantine/core";
 import { IconPlus } from "@tabler/icons-react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import classes from "./Scene.module.css";
 import SoulList from "./SoulList";
 
@@ -13,10 +13,15 @@ interface SceneProps {
   allSoulList: string[];
 }
 
+const defaultClearedEnemies = JSON.stringify([]);
 
 const Scene: React.FC<SceneProps> = ({ sceneName, enemyList, toggleEnemyInScene, foundSouls, allSoulList }) => {
 
-  const [clearedEnemies, setClearedEnemies] = useState<string[]>([]);
+  const sceneKey = `${sceneName} Enemies`;
+
+  const [clearedEnemies, setClearedEnemies] = useState<string[]>(
+    JSON.parse(localStorage.getItem(sceneKey) ?? defaultClearedEnemies)
+  );
   const [opened, setOpened] = useState(false);
   const classNameList = `${classes.row} ${opened ? classes.raiseRow : ""}`;
 
@@ -32,6 +37,9 @@ const Scene: React.FC<SceneProps> = ({ sceneName, enemyList, toggleEnemyInScene,
     }
 
   };
+
+  useEffect(() => localStorage.setItem(sceneKey, JSON.stringify(clearedEnemies)), [sceneKey, clearedEnemies]);
+  
 
   return (
     <Container fluid className={classNameList}>

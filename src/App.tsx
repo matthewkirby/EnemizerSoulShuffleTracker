@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import '@mantine/core/styles.css';
 import { Button, Container, MantineProvider, Popover, SimpleGrid, Text } from '@mantine/core';
 import classes from './App.module.css';
@@ -7,9 +7,11 @@ import Scene from './Scene';
 import React from 'react';
 import SoulList from './SoulList';
 
+import allSoulList from './enemylist.json';
+
+
 // Some temporary data to build the app, import full data from json later.
 const sceneList = ["Shadow Trial", "Spirit Trial", "Forest Trial", "Light Trial"];
-const allSoulList = ["Stalfos", "Deku Baba", "Shabomb", "Tailsparan", "Gohma Larvae"];
 
 
 const defaultTrackerState: { [key:string]: string[] }  = {};
@@ -20,22 +22,28 @@ for (const scene of sceneList) {
 
 // Some more temp data
 defaultTrackerState["Shadow Trial"] = ["Stalfos"];
-defaultTrackerState["Spirit Trial"] = ["Shabomb"];
+defaultTrackerState["Spirit Trial"] = ["Shabom"];
 defaultTrackerState["Forest Trial"] = []
-defaultTrackerState["Light Trial"] = ["Tailsparan", "Shabomb", "Stalfos"]
+defaultTrackerState["Light Trial"] = ["Tailpasaran", "Shabom", "Stalfos"]
 
+const defaultFoundSoulsString = JSON.stringify([]);
+const defaultTrackerStateString = JSON.stringify(defaultTrackerState);
 
 
 
 const App: React.FC = () => {
 
-  const [foundSouls, setFoundSouls] = useState(["Shabomb"]);
-  const [trackerState, setTrackerState] = useState(defaultTrackerState);
+  const [foundSouls, setFoundSouls] = useState(
+    JSON.parse(localStorage.getItem('foundSouls') ?? defaultFoundSoulsString)
+  );
+  const [trackerState, setTrackerState] = useState(
+    JSON.parse(localStorage.getItem('trackerState') ?? defaultTrackerStateString)
+  );
 
   // Handler to mark that a new soul item has been collected.
   const toggleFoundSoul = (soulName: string) => {
     if (foundSouls.includes(soulName)) {
-      const newArray = foundSouls.filter(n => n!==soulName);
+      const newArray = foundSouls.filter((n:string) => n!==soulName);
       setFoundSouls(newArray);
     } else {
       setFoundSouls([...foundSouls, soulName]);
@@ -46,13 +54,25 @@ const App: React.FC = () => {
   const toggleEnemyInScene = (scene: string, enemyName: string) => {
     const newTrackerState = { ...trackerState };
     if (newTrackerState[scene].includes(enemyName)) {
-      const newArray = newTrackerState[scene].filter(n => n!==enemyName);
+      const newArray = newTrackerState[scene].filter((n:string) => n !== enemyName);
       newTrackerState[scene] = newArray;
     } else {
-      newTrackerState[scene] = [ ...newTrackerState[scene], enemyName];
+      newTrackerState[scene] = [ ...newTrackerState[scene], enemyName].sort();
     }
     setTrackerState(newTrackerState);
   };
+
+  // Handler for reset button
+  const resetTracker = () => {
+    setFoundSouls(JSON.parse(defaultFoundSoulsString));
+    setTrackerState(JSON.parse(defaultTrackerStateString));
+    localStorage.clear();
+  }
+
+
+  // Save to localstorage
+  useEffect(() => localStorage.setItem('foundSouls', JSON.stringify(foundSouls)), [foundSouls]);
+  useEffect(() => localStorage.setItem('trackerState', JSON.stringify(trackerState)), [trackerState]);
 
 
   return (
@@ -79,7 +99,7 @@ const App: React.FC = () => {
             </Popover.Dropdown>
           </Popover>
           <Text>Search Bar</Text>
-          <Button variant='light' color='red'>Reset</Button>
+          <Button variant='light' color='red' onClick={() => resetTracker()}>Reset</Button>
         </Container>
       </header>
 
