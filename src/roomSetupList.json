@@ -7,5 +7,11 @@
         "child": true,
         "adult": true,
         "rooms": ["Lobby", "1 Scrub Room", "Slingshot Room", "Platforms Room"]
+    },
+    "Spirit Temple": {
+        "scene": true,
+        "child": true,
+        "adult": true,
+        "rooms": ["Lobby", "Child Climb", "Adult Climb", "Statue Room"]
     }
 }

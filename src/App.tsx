@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import '@mantine/core/styles.css';
-import { Button, Container, MantineProvider, Popover, SimpleGrid, Text } from '@mantine/core';
+import { Accordion, Button, Container, MantineProvider, Popover, SimpleGrid, Text } from '@mantine/core';
 import classes from './App.module.css';
 import { IconPlus } from '@tabler/icons-react';
 import RoomSetup from './RoomSetup';
@@ -16,22 +16,21 @@ localStorage.clear()
 // child/adult/scene props of each room setup shouldnt be stored in the 
 // component state variable. 
 
-// const sceneList = []
+const sceneList: string[] = [];
+const roomSetupList: string[] = [];
 
 const defaultTrackerState: { [key:string]: string[] }  = {};
-for (const [roomSetupName, details] of Object.entries(allRoomSetupsList)) {
+for (const [name, details] of Object.entries(allRoomSetupsList)) {
   if (!details.scene) {
-    defaultTrackerState[roomSetupName] = []
+    defaultTrackerState[name] = []
+    roomSetupList.push(name);
   } else {
-    console.log(roomSetupName)
-    for (const sceneRoomName of details.rooms) {
-      defaultTrackerState[sceneRoomName] = []
+    sceneList.push(name);
+    for (const setupRoomName of details.rooms) {
+      defaultTrackerState[setupRoomName] = [];
     }
   }
 };
-
-const roomSetupList = Object.keys(defaultTrackerState);
-
 
 // Some more temp data
 defaultTrackerState["Shadow Trial"] = ["Stalfos"];
@@ -129,6 +128,25 @@ const App: React.FC = () => {
               />
             ))}
           </SimpleGrid>
+
+          <Accordion multiple={true} chevronPosition='left' variant='contained'>
+            {sceneList.map((sceneName) => (
+              <Accordion.Item key={sceneName} value={sceneName}>
+                <Accordion.Control>{sceneName}</Accordion.Control>
+                {allRoomSetupsList[sceneName].rooms.map((roomName, i) => (
+                  <Accordion.Panel key={i}>
+                    <RoomSetup
+                      roomSetupName={roomName}
+                      enemyList={trackerState[roomName]}
+                      toggleEnemyInSetup={(enemyName: string) => toggleEnemyInSetup(roomName, enemyName)}
+                      foundSouls={foundSouls}
+                      allSoulList={allSoulList}
+                    />
+                  </Accordion.Panel>
+                ))}
+              </Accordion.Item>
+            ))}
+          </Accordion>
         </Container>
       </main>
 
