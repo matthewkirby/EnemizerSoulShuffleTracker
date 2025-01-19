@@ -3,21 +3,34 @@ import '@mantine/core/styles.css';
 import { Button, Container, MantineProvider, Popover, SimpleGrid, Text } from '@mantine/core';
 import classes from './App.module.css';
 import { IconPlus } from '@tabler/icons-react';
-import Scene from './Scene';
+import RoomSetup from './RoomSetup';
 import React from 'react';
 import SoulList from './SoulList';
 
 import allSoulList from './enemylist.json';
+import allRoomSetupsList from './roomSetupList.json';
 
+localStorage.clear()
 
-// Some temporary data to build the app, import full data from json later.
-const sceneList = ["Shadow Trial", "Spirit Trial", "Forest Trial", "Light Trial"];
+// TOOOOOOOOOOODOOOOOOOOOOOOOOOOO
+// child/adult/scene props of each room setup shouldnt be stored in the 
+// component state variable. 
 
+// const sceneList = []
 
 const defaultTrackerState: { [key:string]: string[] }  = {};
-for (const scene of sceneList) {
-  defaultTrackerState[scene] = []
+for (const [roomSetupName, details] of Object.entries(allRoomSetupsList)) {
+  if (!details.scene) {
+    defaultTrackerState[roomSetupName] = []
+  } else {
+    console.log(roomSetupName)
+    for (const sceneRoomName of details.rooms) {
+      defaultTrackerState[sceneRoomName] = []
+    }
+  }
 };
+
+const roomSetupList = Object.keys(defaultTrackerState);
 
 
 // Some more temp data
@@ -50,14 +63,14 @@ const App: React.FC = () => {
     }
   };
 
-  // Handler to toggle an enemy to a scene
-  const toggleEnemyInScene = (scene: string, enemyName: string) => {
+  // Handler to toggle an enemy to a setup
+  const toggleEnemyInSetup = (roomSetupName: string, enemyName: string) => {
     const newTrackerState = { ...trackerState };
-    if (newTrackerState[scene].includes(enemyName)) {
-      const newArray = newTrackerState[scene].filter((n:string) => n !== enemyName);
-      newTrackerState[scene] = newArray;
+    if (newTrackerState[roomSetupName].includes(enemyName)) {
+      const newArray = newTrackerState[roomSetupName].filter((n:string) => n !== enemyName);
+      newTrackerState[roomSetupName] = newArray;
     } else {
-      newTrackerState[scene] = [ ...newTrackerState[scene], enemyName].sort();
+      newTrackerState[roomSetupName] = [ ...newTrackerState[roomSetupName], enemyName].sort();
     }
     setTrackerState(newTrackerState);
   };
@@ -73,7 +86,6 @@ const App: React.FC = () => {
   // Save to localstorage
   useEffect(() => localStorage.setItem('foundSouls', JSON.stringify(foundSouls)), [foundSouls]);
   useEffect(() => localStorage.setItem('trackerState', JSON.stringify(trackerState)), [trackerState]);
-
 
   return (
     <MantineProvider defaultColorScheme='dark'>
@@ -106,12 +118,12 @@ const App: React.FC = () => {
       <main>
         <Container fluid>
           <SimpleGrid cols={1} verticalSpacing={0}>
-            {sceneList.map((sceneName, i) => (
-              <Scene
+            {roomSetupList.map((roomSetupName, i) => (
+              <RoomSetup
                 key={i}
-                sceneName={sceneName}
-                enemyList={trackerState[sceneName]}
-                toggleEnemyInScene={(enemyName: string) => toggleEnemyInScene(sceneName, enemyName)}
+                roomSetupName={roomSetupName}
+                enemyList={trackerState[roomSetupName]}
+                toggleEnemyInSetup={(enemyName: string) => toggleEnemyInSetup(roomSetupName, enemyName)}
                 foundSouls={foundSouls}
                 allSoulList={allSoulList}
               />

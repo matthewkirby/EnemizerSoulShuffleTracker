@@ -1,0 +1,11 @@
+{
+    "Kokiri Forest (Adult)": { "scene": false, "child": false, "adult": true, "rooms": [] },
+    "Hyrule Field (Child)": { "scene": false, "child": true, "adult": false, "rooms": [] },
+    "Market (Adult)": { "scene": false, "child": false, "adult": true, "rooms": [] },
+    "Deku Tree": {
+        "scene": true,
+        "child": true,
+        "adult": true,
+        "rooms": ["Lobby", "1 Scrub Room", "Slingshot Room", "Platforms Room"]
+    }
+}

@@ -1,26 +1,28 @@
 import { Button, Container, Flex, Popover, Text } from "@mantine/core";
 import { IconPlus } from "@tabler/icons-react";
 import React, { useEffect, useState } from "react";
-import classes from "./Scene.module.css";
+import classes from "./RoomSetup.module.css";
 import SoulList from "./SoulList";
 
 
-interface SceneProps {
-  sceneName: string;
+interface RoomSetupProps {
+  roomSetupName: string;
   enemyList: string[];
-  toggleEnemyInScene: (enemyName: string) => void;
+  toggleEnemyInSetup: (enemyName: string) => void;
   foundSouls: string[];
   allSoulList: string[];
 }
 
 const defaultClearedEnemies = JSON.stringify([]);
 
-const Scene: React.FC<SceneProps> = ({ sceneName, enemyList, toggleEnemyInScene, foundSouls, allSoulList }) => {
+const RoomSetup: React.FC<RoomSetupProps> = ({
+  roomSetupName, enemyList, toggleEnemyInSetup, foundSouls, allSoulList
+}) => {
 
-  const sceneKey = `${sceneName} Enemies`;
+  const roomSetupKey = `${roomSetupName} Enemies`;
 
   const [clearedEnemies, setClearedEnemies] = useState<string[]>(
-    JSON.parse(localStorage.getItem(sceneKey) ?? defaultClearedEnemies)
+    JSON.parse(localStorage.getItem(roomSetupKey) ?? defaultClearedEnemies)
   );
   const [opened, setOpened] = useState(false);
   const classNameList = `${classes.row} ${opened ? classes.raiseRow : ""}`;
@@ -38,7 +40,7 @@ const Scene: React.FC<SceneProps> = ({ sceneName, enemyList, toggleEnemyInScene,
 
   };
 
-  useEffect(() => localStorage.setItem(sceneKey, JSON.stringify(clearedEnemies)), [sceneKey, clearedEnemies]);
+  useEffect(() => localStorage.setItem(roomSetupKey, JSON.stringify(clearedEnemies)), [roomSetupKey, clearedEnemies]);
   
 
   return (
@@ -66,10 +68,10 @@ const Scene: React.FC<SceneProps> = ({ sceneName, enemyList, toggleEnemyInScene,
 
         <Popover.Dropdown>
           <SoulList
-            title={`Enemies In ${sceneName}`}
+            title={`Enemies In ${roomSetupName}`}
             allSoulList={allSoulList}
             highlightSouls={enemyList}
-            onChildClick={toggleEnemyInScene}
+            onChildClick={toggleEnemyInSetup}
             selectedColor="grape"
           />
         </Popover.Dropdown>
@@ -77,7 +79,7 @@ const Scene: React.FC<SceneProps> = ({ sceneName, enemyList, toggleEnemyInScene,
 
       </Popover>
 
-      <Text size='xl' fw={700} className={classes.sceneName}>{sceneName}:</Text>
+      <Text size='xl' fw={700} className={classes.roomSetupName}>{roomSetupName}:</Text>
       <Flex
         gap='md'
         justify='flex-start'
@@ -89,8 +91,8 @@ const Scene: React.FC<SceneProps> = ({ sceneName, enemyList, toggleEnemyInScene,
 
           const buttonColor = 
             !foundSouls.includes(enemyName) ? "red" // Not found soul
-            : !clearedEnemies.includes(enemyName) ? "green" // In scene, have soul, not defeated
-            : "rgba(122, 108, 108, 1)"; // In scene, have soul, defeated
+            : !clearedEnemies.includes(enemyName) ? "green" // In setup, have soul, not defeated
+            : "rgba(122, 108, 108, 1)"; // In setup, have soul, defeated
 
           return (
             <Button
@@ -109,4 +111,4 @@ const Scene: React.FC<SceneProps> = ({ sceneName, enemyList, toggleEnemyInScene,
   );
 }
 
-export default Scene;
+export default RoomSetup;
