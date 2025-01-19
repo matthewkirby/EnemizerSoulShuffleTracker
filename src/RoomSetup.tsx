@@ -12,10 +12,11 @@ interface RoomSetupProps {
   toggleEnemy: (enemyName: string, which: "spawn"|"clear") => void;
   foundSouls: string[];
   allSoulList: string[];
+  variant?: "primary" | "secondary";
 }
 
 const RoomSetup: React.FC<RoomSetupProps> = ({
-  roomSetupName, spawnList, clearedList, toggleEnemy, foundSouls, allSoulList
+  roomSetupName, spawnList, clearedList, toggleEnemy, foundSouls, allSoulList, variant = "primary"
 }) => {
 
   const [opened, setOpened] = useState(false);
@@ -23,41 +24,6 @@ const RoomSetup: React.FC<RoomSetupProps> = ({
 
   return (
     <Container fluid className={classNameList}>
-
-      <Popover
-        opened={opened}
-        onChange={setOpened}
-        width='75%'
-        offset={15}
-        withOverlay withArrow
-        overlayProps={{blur: '8px'}}
-      >
-
-
-        <Popover.Target>
-          <Button
-            variant="default"
-            size='compact-sm'
-            className={classes.button}
-            onClick={() => setOpened((o) => !o)}
-          ><IconPlus stroke={2} size='1rem'/></Button>
-        </Popover.Target>
-
-
-        <Popover.Dropdown>
-          <SoulList
-            title={`Enemies In ${roomSetupName}`}
-            allSoulList={allSoulList}
-            highlightSouls={spawnList}
-            onChildClick={(enemyName) => toggleEnemy(enemyName, "spawn")}
-            selectedColor="grape"
-          />
-        </Popover.Dropdown>
-
-
-      </Popover>
-
-      <Text size='xl' fw={700} className={classes.roomSetupName}>{roomSetupName}:</Text>
       <Flex
         gap='md'
         justify='flex-start'
@@ -65,6 +31,46 @@ const RoomSetup: React.FC<RoomSetupProps> = ({
         direction='row'
         wrap='wrap'
       >
+
+        <Popover
+          opened={opened}
+          onChange={setOpened}
+          width='75%'
+          offset={15}
+          withOverlay withArrow
+          overlayProps={{blur: '8px'}}
+        >
+
+          <Popover.Target>
+            <Button
+              variant="default"
+              size={variant === "secondary" ? 'compact-xs' : 'compact-sm'}
+              className={classes.button}
+              onClick={() => setOpened((o) => !o)}
+            ><IconPlus stroke={2} size='1rem'/></Button>
+          </Popover.Target>
+
+          <Popover.Dropdown>
+            <SoulList
+              title={`Enemies In ${roomSetupName}`}
+              allSoulList={allSoulList}
+              highlightSouls={spawnList}
+              onChildClick={(enemyName) => toggleEnemy(enemyName, "spawn")}
+              selectedColor="grape"
+            />
+          </Popover.Dropdown>
+
+        </Popover>
+
+        <Text
+          size={variant === "secondary" ? "md" : "xl"}
+          fw={700}
+          className={classes.roomSetupName}
+        >
+          {roomSetupName}:
+        </Text>
+
+
         {spawnList.map((enemyName, i) => {
 
           const buttonColor = 
@@ -78,6 +84,7 @@ const RoomSetup: React.FC<RoomSetupProps> = ({
               variant="light"
               color={buttonColor}
               onClick={() => toggleEnemy(enemyName, "clear")}
+              size={variant === "secondary" ? "xs" : "sm"}
             >
               {enemyName}
             </Button>

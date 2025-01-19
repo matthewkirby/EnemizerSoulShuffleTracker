@@ -135,7 +135,11 @@ const App: React.FC = () => {
 
       <main>
         <Container fluid>
-          <SimpleGrid cols={1} verticalSpacing={0}>
+          <SimpleGrid
+            cols={1}
+            verticalSpacing='md'
+            className={classes.grid}
+          >
             {Object.keys(overworldSpawnState).map((roomSetupName, i) => (
               <RoomSetup
                 key={i}
@@ -153,7 +157,15 @@ const App: React.FC = () => {
           <Accordion multiple={true} chevronPosition='left' variant='contained'>
             {Object.keys(dungeonSpawnState).map((sceneName) => (
               <Accordion.Item key={sceneName} value={sceneName}>
-                <Accordion.Control>{sceneName}</Accordion.Control>
+                <Accordion.Control>
+                  <Text
+                    size="xl"
+                    fw={700}
+                    className={classes.roomSetupName}
+                  >
+                    {sceneName}
+                  </Text>
+                </Accordion.Control>
                 {Object.keys(dungeonSpawnState[sceneName]).map((roomName, i) => (
                   <Accordion.Panel key={i}>
                     <RoomSetup
@@ -164,6 +176,7 @@ const App: React.FC = () => {
                         (enemyName: string, which: "spawn"|"clear") => toggleDungeonEnemy(sceneName, roomName, enemyName, which)}
                       foundSouls={foundSouls}
                       allSoulList={allSoulList}
+                      variant='secondary'
                     />
                   </Accordion.Panel>
                 ))}
