@@ -18,6 +18,7 @@ for (const [name, details] of Object.entries(allRoomSetupsList)) {
   }
 };
 
+export const overworldSetups = defaultOverworldState;
+export const dungeonSetups = defaultDungeonState;
+
 export const defaultFoundSoulsString = JSON.stringify([]);
-export const defaultOverworldStateString = JSON.stringify(defaultOverworldState);
-export const defaultDungeonStateString = JSON.stringify(defaultDungeonState);

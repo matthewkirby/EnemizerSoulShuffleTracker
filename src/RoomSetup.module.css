@@ -1,9 +1,4 @@
-.button {
-
-}
-
 .row {
-  /* height: 50px; */
   width: 100%;
   display: flex;
   flex-wrap: wrap;
@@ -16,6 +11,6 @@
   z-index: 201;
 }
 
-.roomSetupName {
-  
+.warningButton {
+  border: 1px dashed yellow;
 }

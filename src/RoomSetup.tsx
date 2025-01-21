@@ -1,26 +1,51 @@
 import { Button, Container, Flex, Popover, Text } from "@mantine/core";
 import { IconPlus } from "@tabler/icons-react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import classes from "./RoomSetup.module.css";
 import SoulList from "./SoulList";
 
 
 interface RoomSetupProps {
   roomSetupName: string;
-  spawnList: string[];
-  clearedList: string[];
-  toggleEnemy: (enemyName: string, which: "spawn"|"clear") => void;
   foundSouls: string[];
   allSoulList: string[];
   variant?: "primary" | "secondary";
+  sceneName?: string;
+  enableNoSoulToggleWarning?: boolean;
 }
 
+const defaultStorageString = JSON.stringify([]);
+
 const RoomSetup: React.FC<RoomSetupProps> = ({
-  roomSetupName, spawnList, clearedList, toggleEnemy, foundSouls, allSoulList, variant = "primary"
+  roomSetupName, foundSouls, allSoulList, variant = "primary", sceneName = "", enableNoSoulToggleWarning = true
 }) => {
+
+  const uniqueName = `${sceneName.slice(0,2)}:${roomSetupName}`;
+  const spawnString = `${uniqueName}Spawns`;
+  const clearString = `${uniqueName}Cleared`;
+
+  const [spawns, setSpawns] = useState<string[]>(JSON.parse(localStorage.getItem(spawnString) ?? defaultStorageString));
+  const [clears, setClears] = useState<string[]>(JSON.parse(localStorage.getItem(clearString) ?? defaultStorageString));
 
   const [opened, setOpened] = useState(false);
   const classNameList = `${classes.row} ${opened ? classes.raiseRow : ""}`;
+
+
+  const toggleEnemy = (enemyName: string, which: "spawn" | "clear") => {
+    const whichState = which === "spawn" ? [ ...spawns ] : [ ...clears ];
+    const whichSetter = which === "spawn" ? setSpawns : setClears;
+
+    if (whichState.includes(enemyName)) {
+      const newArray = whichState.filter((name:string) => name !== enemyName);
+      whichSetter(newArray);
+    } else {
+      whichSetter([ ...whichState, enemyName ].sort());
+    }
+  };
+
+  useEffect(() => localStorage.setItem(spawnString, JSON.stringify(spawns)), [spawnString, spawns]);
+  useEffect(() => localStorage.setItem(clearString, JSON.stringify(clears)), [clearString, clears]);
+
 
   return (
     <Container fluid className={classNameList}>
@@ -45,7 +70,6 @@ const RoomSetup: React.FC<RoomSetupProps> = ({
             <Button
               variant="default"
               size={variant === "secondary" ? 'compact-xs' : 'compact-sm'}
-              className={classes.button}
               onClick={() => setOpened((o) => !o)}
             ><IconPlus stroke={2} size='1rem'/></Button>
           </Popover.Target>
@@ -54,7 +78,7 @@ const RoomSetup: React.FC<RoomSetupProps> = ({
             <SoulList
               title={`Enemies In ${roomSetupName}`}
               allSoulList={allSoulList}
-              highlightSouls={spawnList}
+              highlightSouls={spawns}
               onChildClick={(enemyName) => toggleEnemy(enemyName, "spawn")}
               selectedColor="grape"
             />
@@ -65,18 +89,24 @@ const RoomSetup: React.FC<RoomSetupProps> = ({
         <Text
           size={variant === "secondary" ? "md" : "xl"}
           fw={700}
-          className={classes.roomSetupName}
         >
           {roomSetupName}:
         </Text>
 
 
-        {spawnList.map((enemyName, i) => {
+        {spawns.map((enemyName: string, i:number) => {
 
           const buttonColor = 
-            !foundSouls.includes(enemyName) ? "red" // Not found soul
-            : !clearedList.includes(enemyName) ? "green" // In setup, have soul, not defeated
-            : "rgba(122, 108, 108, 1)"; // In setup, have soul, defeated
+            clears.includes(enemyName) ? "rgba(122, 108, 108, 1)" // Defeated
+            : foundSouls.includes(enemyName) ? "green" // Have the soul, undefeated
+            : "red"; // Don't have the soul, undefeated
+
+          const buttonClasses = (
+            enableNoSoulToggleWarning &&
+            !foundSouls.includes(enemyName) &&
+            clears.includes(enemyName)
+          )
+            ? classes.warningButton : "";
 
           return (
             <Button
@@ -85,6 +115,7 @@ const RoomSetup: React.FC<RoomSetupProps> = ({
               color={buttonColor}
               onClick={() => toggleEnemy(enemyName, "clear")}
               size={variant === "secondary" ? "xs" : "sm"}
+              className={buttonClasses}
             >
               {enemyName}
             </Button>

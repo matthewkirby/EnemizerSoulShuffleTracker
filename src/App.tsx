@@ -6,7 +6,7 @@ import { IconPlus } from '@tabler/icons-react';
 import RoomSetup from './RoomSetup';
 import React from 'react';
 import SoulList from './SoulList';
-import { defaultDungeonStateString, defaultFoundSoulsString, defaultOverworldStateString, DungeonStateType, OverworldStateType } from './defaultStates';
+import { overworldSetups, dungeonSetups, defaultFoundSoulsString } from './defaultStates';
 
 import allSoulList from './enemylist.json';
 
@@ -29,23 +29,6 @@ const App: React.FC = () => {
     JSON.parse(localStorage.getItem('foundSouls') ?? defaultFoundSoulsString)
   );
 
-  
-  const [overworldSpawnState, setOverworldSpawnState] = useState<OverworldStateType>(
-    JSON.parse(localStorage.getItem('overworldSpawnState') ?? defaultOverworldStateString)
-  );
-  const [overworldClearState, setOverworldClearState] = useState<OverworldStateType>(
-    JSON.parse(localStorage.getItem('overworldClearState') ?? defaultOverworldStateString)
-  );
-
-
-  const [dungeonSpawnState, setDungeonSpawnState] = useState<DungeonStateType>(
-    JSON.parse(localStorage.getItem('dungeonSpawnState') ?? defaultDungeonStateString)
-  );
-  const [dungeonClearState, setDungeonClearState] = useState<DungeonStateType>(
-    JSON.parse(localStorage.getItem('dungeonClearState') ?? defaultDungeonStateString)
-  );
-
-
   // Handler to mark that a new soul item has been collected.
   const toggleFoundSoul = (soulName: string) => {
     if (foundSouls.includes(soulName)) {
@@ -57,45 +40,11 @@ const App: React.FC = () => {
   };
 
 
-  // Handler to toggle an enemy as spawned or cleared in an overworld room setup (overworldClearState)
-  const toggleOverworldEnemy = (roomName: string, enemyName: string, which: "spawn"|"clear") => {
-    const newOverworldState = which === "spawn" ? { ...overworldSpawnState } : { ...overworldClearState };
-    const setOverworldState = which === "spawn" ? setOverworldSpawnState : setOverworldClearState;
-
-    if (newOverworldState[roomName].includes(enemyName)) {
-      const newArray = newOverworldState[roomName].filter((name:string) => name !== enemyName);
-      newOverworldState[roomName] = newArray;
-    } else {
-      newOverworldState[roomName] = [ ...newOverworldState[roomName], enemyName ].sort();
-    }
-    setOverworldState(newOverworldState);
-  };
-
-  // Handler to toggle an enemy as spawned or cleared in a dungeon room setup (dungeonClearState)
-  const toggleDungeonEnemy = (sceneName: string, roomName: string, enemyName: string, which: "spawn"|"clear") => {
-    const newDungeonState = which === "spawn" ? { ...dungeonSpawnState } : { ...dungeonClearState };
-    const newDungeonSubState = { ...newDungeonState[sceneName] };
-    const setDungeonState = which === "spawn" ? setDungeonSpawnState : setDungeonClearState;
-
-    if (newDungeonSubState[roomName].includes(enemyName)) {
-      const newArray = newDungeonSubState[roomName].filter((name:string) => name !== enemyName);
-      newDungeonSubState[roomName] = newArray;
-    } else {
-      newDungeonSubState[roomName] = [ ...newDungeonSubState[roomName], enemyName].sort();
-    }
-    newDungeonState[sceneName] = newDungeonSubState;
-    setDungeonState(newDungeonState);
-  };
-
 
   // Handler for reset button
   const resetTracker = () => {
-    setFoundSouls(JSON.parse(defaultFoundSoulsString));
-    setOverworldSpawnState(JSON.parse(defaultOverworldStateString));
-    setOverworldClearState(JSON.parse(defaultOverworldStateString));
-    setDungeonSpawnState(JSON.parse(defaultDungeonStateString));
-    setDungeonClearState(JSON.parse(defaultDungeonStateString));
     localStorage.clear();
+    window.location.reload();
   };
 
 
@@ -103,18 +52,6 @@ const App: React.FC = () => {
   useEffect(() =>
     localStorage.setItem('foundSouls', JSON.stringify(foundSouls)),
   [foundSouls]);
-  useEffect(() =>
-    localStorage.setItem('overworldSpawnState', JSON.stringify(overworldSpawnState)),
-  [overworldSpawnState]);
-  useEffect(() =>
-    localStorage.setItem('overworldClearState', JSON.stringify(overworldClearState)),
-  [overworldClearState]);
-  useEffect(() =>
-    localStorage.setItem('dungeonSpawnState', JSON.stringify(dungeonSpawnState)),
-  [dungeonSpawnState]);
-  useEffect(() =>
-    localStorage.setItem('dungeonClearState', JSON.stringify(dungeonClearState)),
-  [dungeonClearState]);
 
   return (
     <>
@@ -150,14 +87,10 @@ const App: React.FC = () => {
             verticalSpacing='md'
             className={classes.grid}
           >
-            {Object.keys(overworldSpawnState).map((roomSetupName, i) => (
+            {Object.keys(overworldSetups).map((roomSetupName, i) => (
               <RoomSetup
                 key={i}
                 roomSetupName={roomSetupName}
-                spawnList={overworldSpawnState[roomSetupName]}
-                clearedList={overworldClearState[roomSetupName]}
-                toggleEnemy={
-                  (enemyName: string, which: "spawn"|"clear") => toggleOverworldEnemy(roomSetupName, enemyName, which)}
                 foundSouls={foundSouls}
                 allSoulList={allSoulList}
               />
@@ -165,7 +98,7 @@ const App: React.FC = () => {
           </SimpleGrid>
 
           <Accordion multiple={true} chevronPosition='left' variant='contained'>
-            {Object.keys(dungeonSpawnState).map((sceneName) => (
+            {Object.keys(dungeonSetups).map((sceneName) => (
               <Accordion.Item key={sceneName} value={sceneName}>
                 <Accordion.Control>
                   <Text
@@ -176,17 +109,14 @@ const App: React.FC = () => {
                     {sceneName}
                   </Text>
                 </Accordion.Control>
-                {Object.keys(dungeonSpawnState[sceneName]).map((roomName, i) => (
+                {Object.keys(dungeonSetups[sceneName]).map((roomName, i) => (
                   <Accordion.Panel key={i}>
                     <RoomSetup
                       roomSetupName={roomName}
-                      spawnList={dungeonSpawnState[sceneName][roomName]}
-                      clearedList={dungeonClearState[sceneName][roomName]}
-                      toggleEnemy={
-                        (enemyName: string, which: "spawn"|"clear") => toggleDungeonEnemy(sceneName, roomName, enemyName, which)}
                       foundSouls={foundSouls}
                       allSoulList={allSoulList}
                       variant='secondary'
+                      sceneName={sceneName}
                     />
                   </Accordion.Panel>
                 ))}
