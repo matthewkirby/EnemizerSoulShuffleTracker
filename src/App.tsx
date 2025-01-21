@@ -12,6 +12,17 @@ import allSoulList from './enemylist.json';
 
 
 
+const AppTheming: React.FC = () => {
+  return (
+    <MantineProvider defaultColorScheme='dark'>
+      <App/>
+    </MantineProvider>
+  );
+};
+
+
+
+
 const App: React.FC = () => {
 
   const [foundSouls, setFoundSouls] = useState(
@@ -106,8 +117,7 @@ const App: React.FC = () => {
   [dungeonClearState]);
 
   return (
-    <MantineProvider defaultColorScheme='dark'>
-
+    <>
       <header className={classes.header}>
         <Container fluid className={classes.inner}>
           <Popover
@@ -185,9 +195,8 @@ const App: React.FC = () => {
           </Accordion>
         </Container>
       </main>
-
-    </MantineProvider>
+    </>
   )
 }
 
-export default App
+export default AppTheming;

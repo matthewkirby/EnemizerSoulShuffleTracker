@@ -1,17 +1,115 @@
 {
-    "Kokiri Forest (Adult)": { "scene": false, "child": false, "adult": true, "rooms": [] },
-    "Hyrule Field (Child)": { "scene": false, "child": true, "adult": false, "rooms": [] },
-    "Market (Adult)": { "scene": false, "child": false, "adult": true, "rooms": [] },
+    "Kokiri Forest (C) Near Deku Tree": { "scene": false, "child": true, "adult": false, "rooms": [] },
+    "Kokiri Forest (A)": { "scene": false, "child": false, "adult": true, "rooms": [] },
+    "Kokiri Forest (A) Near Deku Tree": { "scene": false, "child": false, "adult": true, "rooms": [] },
+    "Lost Woods (A) Saria Room": { "scene": false, "child": false, "adult": true, "rooms": [] },
+    "Lost Woods (A) Ocarina Game": { "scene": false, "child": false, "adult": true, "rooms": [] },
+    "Sacred Forest Meadow (C)": { "scene": false, "child": true, "adult": false, "rooms": [] },
+    "Sacred Forest Meadow (A)": { "scene": false, "child": false, "adult": true, "rooms": [] },
+    "Wolfos Grotto": { "scene": false, "child": true, "adult": true, "rooms": [] },
+    "Field Cow Grotto": { "scene": false, "child": true, "adult": true, "rooms": [] },
+    "Tektite Grotto": { "scene": false, "child": true, "adult": true, "rooms": [] },
+    "Near Kak Grotto": { "scene": false, "child": true, "adult": true, "rooms": [] },
+    "Hyrule Field (C)": { "scene": false, "child": true, "adult": false, "rooms": [] },
+    "Market (A)": { "scene": false, "child": false, "adult": true, "rooms": [] },
+    "Mud Wall Grotto": { "scene": false, "child": true, "adult": true, "rooms": [] },
+    "Lon Long Ranch (C)": { "scene": false, "child": true, "adult": false, "rooms": [] },
+    "Day Graveyard (A)": { "scene": false, "child": false, "adult": true, "rooms": [] },
+    "Night Graveyard (A)": { "scene": false, "child": false, "adult": true, "rooms": [] },
+    "Redead Grotto": { "scene": false, "child": true, "adult": true, "rooms": [] },
+    "Redead Grave": { "scene": false, "child": true, "adult": true, "rooms": [] },
+    "Royal Family's Tomb Entrance": { "scene": false, "child": true, "adult": true, "rooms": [] },
+    "Royal Family's Tomb Room 2": { "scene": false, "child": true, "adult": true, "rooms": [] },
+    "Dampe Race Segment 2": { "scene": false, "child": true, "adult": true, "rooms": [] },
+    "Dampe Race Segment 3": { "scene": false, "child": true, "adult": true, "rooms": [] },
+    "Death Mountain Trail (A)": { "scene": false, "child": false, "adult": true, "rooms": [] },
+    "Death Mountain Trail (C)": { "scene": false, "child": true, "adult": false, "rooms": [] },
+    "Death Mountain Crater (A?)": { "scene": false, "child": false, "adult": true, "rooms": [] },
+    "Zora River (C)": { "scene": false, "child": true, "adult": false, "rooms": [] },
+    "Zora River (A)": { "scene": false, "child": false, "adult": true, "rooms": [] },
+    "Zora Fountain (A) ": { "scene": false, "child": false, "adult": true, "rooms": [] },
+    "Lake Hylia (C)": { "scene": false, "child": true, "adult": false, "rooms": [] },
+    "Lake Hylia (A)": { "scene": false, "child": false, "adult": true, "rooms": [] },
+    "Gerudo Valley (A)": { "scene": false, "child": false, "adult": true, "rooms": [] },
+    "Octorock Grotto": { "scene": false, "child": true, "adult": true, "rooms": [] },
+    "Desert Colossus (C)": { "scene": false, "child": true, "adult": false, "rooms": [] },
+    "Desert Colossus (A)": { "scene": false, "child": false, "adult": true, "rooms": [] },
     "Deku Tree": {
         "scene": true,
         "child": true,
         "adult": true,
-        "rooms": ["Lobby", "1 Scrub Room", "Slingshot Room", "Platforms Room"]
+        "rooms": ["Lobby", "Compass Room", "Basement", "Spinning Log Room", "Torch Room", "Big Back Room", "Gold Skulltula Room"]
+    },
+    "Dodongo's Cavern": {
+        "scene": true,
+        "child": true,
+        "adult": true,
+        "rooms": ["Lobby", "Lower Right Hallway", "Before Lower Lizalfos", "Lower Lizalfos", "Torch Room", "Compass Room", "Staircase Room", "Climb Switch Room", "Before Upper Lizalfos", "Upper Lizalfos", "Before Boss", "Before Back Room", "Back Room"]
+    },
+    "Jabu Jabu": {
+        "scene": true,
+        "child": true,
+        "adult": true,
+        "rooms": ["Entryway", "Elevator Room", "Pit Room", "Below Pit Room", "Basement Switch Room", "Basement DLC Room", "Tentacle Hallway", "Boomerang Chest Room", "Compass Chest Room", "Last Tentacle Room", "Above Big Octo", "Wiggler Platform Room", "Before Boss"]
+    },
+    "Bottom of the Well": {
+        "scene": true,
+        "child": true,
+        "adult": true,
+        "rooms": ["Entryway", "Basement", "Coffin Room", "Invisible Holes Room", "Left Inner Room", "Right Inner Room"]
+    },
+    "Forest Temple": {
+        "scene": true,
+        "child": true,
+        "adult": true,
+        "rooms": ["Entrance", "Entry Hall", "Before Stalfos Hall", "Lower Stalfos", "Pillars Courtyard", "Map Room", "Island Courtyard", "Before Climb Hall", "Push Block Room", "Floormaster Room", "Bubble Room", "1st Twisted Hallway", "2nd Twisted Hallway", "Falling Ceiling", "After Green Poe Hall", "Basement"]
+    },
+    "Fire Temple": {
+        "scene": true,
+        "child": true,
+        "adult": true,
+        "rooms": ["Lobby", "Big Lava Room", "Song of Time Block Room", "Elevator Room", "Shortcut Room", "Upper Boulder Maze", "Moving Fire Room", "Flame Maze", "Upper Flare Dancer Room", "Hammer Chest Room", "Hammer Staircase Room", "Room Behind Hammer Blocks", "Room Before Lower Flare Dancer", "Lower Flare Dancer Room"]
+    },
+    "Water Temple": {
+        "scene": true,
+        "child": true,
+        "adult": true,
+        "rooms": ["Lobby", "Central Pillar", "South Basement", "Hallway Before Compass Chest", "Falling Platform Room", "Water Level Statue Puzzle Room", "Dark Link Room", "Dragon Statue Room", "Water Spout Room", "Upper Water Switch Room", "Currents and Whirlpools Room", "DLC Room", "3 Water Spout Room", "Torches Chest Room", "Map Chest Room"]
+    },
+    "Shadow Temple": {
+        "scene": true,
+        "child": true,
+        "adult": true,
+        "rooms": ["Map Room", "First Dead Hand", "Beamos Spot", "Compass Room", "Guillotine Hallway", "Huge Pit Room", "Invisible Spikes Room", "Spike Walls Room", "1 Giant Pot Room", "Invisible Maze", "Invisible Blades Room", "Invisible Floormaster Room", "Wind Tunnel", "Wind Hint Room", "Before Boat Room", "Boat Ride"]
     },
     "Spirit Temple": {
         "scene": true,
         "child": true,
         "adult": true,
-        "rooms": ["Lobby", "Child Climb", "Adult Climb", "Statue Room"]
+        "rooms": ["Lobby (Main + Adult Side)", "Child Side Lobby", "Child Early Torch Room", "Child Bridge Room", "Child Anubis Room", "Child Climb", "Statue Room", "Sun Block Room", "Child Iron Knuckle", "Compass Room", "After Boulder Room", "Adult Climb", "Beamos Hallway", "Adult Anubis Room", "Four Armos Room", "Adult Iron Knuckle", "Boss Key Room", "Shifting Wall Room", "High Mirror Room"]
+    },
+    "Ice Cavern": {
+        "scene": true,
+        "child": true,
+        "adult": true,
+        "rooms": ["Entrance", "Sliding Spike Hallway", "Map Room", "Compass Room", "Block Push Room", "Final Hallway", "Final Room"]
+    },
+    "Gerudo Training Ground": {
+        "scene": true,
+        "child": true,
+        "adult": true,
+        "rooms": ["Stalfos Room","Slopes Room","Wolfos Room","Like Like Room","Hammer Room","Lava Room","Dinolfos Room","Toilet"]
+    },
+    "Ganon's Castle": {
+        "scene": true,
+        "child": true,
+        "adult": true,
+        "rooms": ["Entrance", "Spirit Trial Room 1", "Spirit Trial Room 2", "Light Trial Room 1", "Light Trial Fake Ending Room", "Fire Trial", "Shadow Trial", "Water Trial", "Forest Trial Torch Room", "Forest Trial Pits Room"]
+    },
+    "Ganon's Tower": {
+        "scene": true,
+        "child": true,
+        "adult": true,
+        "rooms": ["Entry Staircase", "First Battle Room", "Second Battle Room", "Third Battle Room"]
     }
 }
